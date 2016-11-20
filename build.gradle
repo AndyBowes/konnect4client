@@ -3,7 +3,7 @@ version '1.0.1'
 
 
 buildscript {
-    ext.kotlin_version = '1.0.3'
+    ext.kotlin_version = '1.0.5'
 
     repositories {
         mavenCentral()
@@ -33,8 +33,7 @@ dependencies {
     compile 'com.github.kittinunf.fuel:fuel:1.3.1'
     compile "com.fasterxml.jackson.module:jackson-module-kotlin:2.8.4"
 
-    testCompile 'org.jetbrains.spek:spek-api:1.0.89'
     testCompile 'com.natpryce:hamkrest:1.2.3.0'
+    testCompile 'org.jetbrains.spek:spek-api:1.0.89'
     testRuntime 'org.jetbrains.spek:spek-junit-platform-engine:1.0.89'
-
 }
