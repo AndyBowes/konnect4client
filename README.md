@@ -21,9 +21,14 @@ This function needs to have the signature of (Player, GameState) -> Int where th
 This function is injected into the moveStrategy property of the Konnect4Client & this will be used in place of the default strategy. 
 
     fun randomStategy(player: Player, gameState: GameState) : Int {
-        val playerColour = gameState.getPlayerColour(player)
-        val legalMoves = gameState.getLegalMoves()
-        return legalMoves.first().first
+      val board = gameState.getBoard()
+      val myColour = gameState.getPlayerColour(player)
+      val opponentColour = gameState.getOpponentColour(player)
+      val legalMoves = board.legalMoves()
+      val selectedMove = legalMoves.first()
+      val selectedColumn = selectedMove.first
+      val selectedRow = selectedMove.second
+      return selectedColumn
     }
 
     class MyConnect4Client {

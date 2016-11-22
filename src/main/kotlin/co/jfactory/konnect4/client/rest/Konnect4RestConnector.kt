@@ -13,8 +13,9 @@ import java.net.URLEncoder
  */
 class GamesStateDeserializer : ResponseDeserializable<GameState> {
     val mapper = jacksonObjectMapper()
-    override fun deserialize(json: String) = mapper.readValue(json, GameState::class.java)
+    override fun deserialize(json: String): GameState? = mapper.readValue(json, GameState::class.java)
 }
+
 
 /**
  * Class which provides REST Interface to the Connect 4 Game Engine

@@ -60,7 +60,7 @@ class ModelSpec : Spek({
         val json = "{\"CurrentState\":3,\"Cells\":[[0,0,0,0,0,0],[2,0,0,0,0,0],[1,2,2,1,2,2],[1,0,0,0,0,0],[0,0,0,0,0,0],[0,0,0,0,0,0],[2,0,0,0,0,0]],\"YellowPlayerID\":\"a05bf67c-2bbb-4243-bf18-fe60c52cf4f9\", \"RedPlayerID\":\"6351a731-e934-4397-bafa-29d09cfb9dd9\", \"ID\":\"f67c2987-c803-4c79-a065-32de5455bd09\"}"
 
         it("should create GameState objects from JSON ") {
-            val gameState: GameState = GamesStateDeserializer().deserialize(json)
+            val gameState: GameState = GamesStateDeserializer().deserialize(json)!!
             gameState.id shouldMatch equalTo("f67c2987-c803-4c79-a065-32de5455bd09")
             gameState.currentState shouldMatch equalTo(State.RedToPlay)
             gameState.redPlayerId shouldMatch equalTo("6351a731-e934-4397-bafa-29d09cfb9dd9")
@@ -79,6 +79,9 @@ class ModelSpec : Spek({
             assertThat("Column 4", legalMoves.contains(Pair(0, 0)), equalTo(true))
             assertThat("Column 5", legalMoves.contains(Pair(0, 0)), equalTo(true))
             assertThat("Column 6", legalMoves.contains(Pair(0, 0)), equalTo(true))
+
+            println("Printing Board")
+            board.print()
         }
     }
 

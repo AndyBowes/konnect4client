@@ -3,7 +3,41 @@ package co.jfactory.konnect4.client
 import co.jfactory.konnect4.client.rest.Konnect4RestConnector
 import co.jfactory.konnect4.model.*
 
-class Konnect4Client(userName: String, password: String, rootUrl: String = "http://yorkdojoconnect4.azurewebsites.net", val pollPause: Long = 2000) {
+// TODO - Implement a method with this signature which can be passed to the Konnect4 Client.
+/**
+ * Simple Move selector which just picks the 1st Legal Move
+ */
+fun simpleMoveSelector(player: Player, gameState: GameState) : Int {
+    val board = gameState.getBoard()
+    val myColour = gameState.getPlayerColour(player)
+    val opponentColour = gameState.getOpponentColour(player)
+    val legalMoves = board.legalMoves()
+    val selectedMove = legalMoves.first()
+    val selectedColumn = selectedMove.first
+    //val selectedRow = selectedMove.second
+    return selectedColumn
+}
+
+
+/**
+ * Client that manages a game.
+ *
+ * In order to play a game you will need to create an instance of this class passing in the
+ * user name and password or your player and then start the game.
+ *
+ * client = Konnect4Client("<<myUserName>>","<<password>>")
+ * client.playGame()
+ *
+ *
+ * In order to win you will need to create your own function which selects the
+ *
+ */
+class Konnect4Client(userName: String,
+                     password: String,
+                     rootUrl: String = "http://yorkdojoconnect4.azurewebsites.net",
+                     val pollPause: Long = 500,
+                     val moveStrategy: (Player, GameState) -> Int = ::simpleMoveSelector,
+                     val showFinalBoard: Boolean = true) {
     val connector: Konnect4RestConnector
     val player: Player
     init {
@@ -26,7 +60,7 @@ class Konnect4Client(userName: String, password: String, rootUrl: String = "http
             }
 
             if (gameState.isMyTurn(player)){
-                val selectedColumn = selectMove(gameState)
+                val selectedColumn = moveStrategy(player, gameState)
                 connector.makeMove(player, selectedColumn)
             } else {
                 // Wait for opponent to make a move
@@ -43,8 +77,11 @@ class Konnect4Client(userName: String, password: String, rootUrl: String = "http
         } else {
             System.out.println("Its a draw")
         }
-        val board = gameState.getBoard()
-        board.print()
+        if (showFinalBoard) {
+            val board = gameState.getBoard()
+            println("Final Board Positions")
+            board.print()
+        }
     }
 
     private fun startGame(player: Player) {
@@ -53,19 +90,16 @@ class Konnect4Client(userName: String, password: String, rootUrl: String = "http
             connector.newGame(player)
         }
     }
+}
 
-    /**
-     * Select the best move to make in this turn
-     * Returns the number of the selected column.
-     */
-    fun selectMove(gameState: GameState) : Int {
-        val board = gameState.getBoard()
-        val legalMoves = board.legalMoves()
-
-        // TODO - Your code goes here.  This example just gets the column of the 1st Legal Move
-        val selectedColumn = legalMoves.first().first
-
-        return selectedColumn
-    }
-
+fun Board.print() {
+    val size = getSize()
+    val m = mapOf(CellColour.EMPTY to ".", CellColour.RED to "X", CellColour.YELLOW to "0")
+    ((size.second - 1) downTo 0) // Iterate through rows in reverse order
+            .map { r ->
+                (0..(size.first - 1))  // Iterate through the columns
+                        .map { m[this.getCellContent(it, r)] } // Convert the Colour in the Cell to a Symbol
+                        .joinToString(separator = " ")
+            }
+            .forEach(::println)
 }
