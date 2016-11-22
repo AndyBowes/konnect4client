@@ -79,9 +79,6 @@ class ModelSpec : Spek({
             assertThat("Column 4", legalMoves.contains(Pair(0, 0)), equalTo(true))
             assertThat("Column 5", legalMoves.contains(Pair(0, 0)), equalTo(true))
             assertThat("Column 6", legalMoves.contains(Pair(0, 0)), equalTo(true))
-
-            println("Printing Board")
-            board.print()
         }
     }
 
