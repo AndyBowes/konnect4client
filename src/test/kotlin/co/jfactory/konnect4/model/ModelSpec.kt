@@ -11,6 +11,29 @@ import org.jetbrains.spek.api.dsl.it
 
 class ModelSpec : Spek({
 
+
+    describe("Handle Cell Colours") {
+
+        given("Each Colour"){
+
+            it("calculates opposite of Red is Yellow"){
+                !CellColour.RED shouldMatch equalTo(CellColour.YELLOW)
+                -CellColour.RED shouldMatch equalTo(CellColour.YELLOW)
+            }
+
+            it("calculates opposite of Yellow is Red"){
+                !CellColour.YELLOW shouldMatch equalTo(CellColour.RED)
+                -CellColour.YELLOW shouldMatch equalTo(CellColour.RED)
+            }
+
+            it("calculates opposite of Empty is Empty"){
+                !CellColour.EMPTY shouldMatch equalTo(CellColour.EMPTY)
+                -CellColour.EMPTY shouldMatch equalTo(CellColour.EMPTY)
+            }
+        }
+
+    }
+
     describe("Check Legal Moves") {
 
         given("A Partially filled Board") {

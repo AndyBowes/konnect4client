@@ -7,13 +7,16 @@ enum class CellColour(val value: Int) {
     RED(1),
     YELLOW(2);
 
-    operator fun not() {
-        when (this) {
+    operator fun unaryMinus() : CellColour {
+        val opposite = when (this) {
             RED -> YELLOW
             YELLOW -> RED
             EMPTY -> EMPTY
         }
+        return opposite
     }
+
+    operator fun not() : CellColour { return -this }
 }
 
 enum class State(val value: Int) {

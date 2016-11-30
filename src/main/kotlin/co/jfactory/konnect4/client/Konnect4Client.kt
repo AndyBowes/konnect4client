@@ -7,10 +7,8 @@ import co.jfactory.konnect4.model.*
 /**
  * Simple Move selector which just picks the 1st Legal Move
  */
-fun simpleMoveSelector(player: Player, gameState: GameState) : Int {
+fun simpleMoveSelector(colour: CellColour, gameState: GameState) : Int {
     val board = gameState.getBoard()
-    val myColour = gameState.getPlayerColour(player)
-    val opponentColour = gameState.getOpponentColour(player)
     val legalMoves = board.legalMoves()
     val selectedMove = legalMoves.first()
     val selectedColumn = selectedMove.first
@@ -35,8 +33,8 @@ fun simpleMoveSelector(player: Player, gameState: GameState) : Int {
 class Konnect4Client(userName: String,
                      password: String,
                      rootUrl: String = "http://yorkdojoconnect4.azurewebsites.net",
-                     val pollPause: Long = 500,
-                     val moveStrategy: (Player, GameState) -> Int = ::simpleMoveSelector,
+                     val pollPause: Long = 250,
+                     val moveStrategy: (CellColour, GameState) -> Int = ::simpleMoveSelector,
                      val showFinalBoard: Boolean = true) {
     val connector: Konnect4RestConnector
     val player: Player
@@ -60,7 +58,8 @@ class Konnect4Client(userName: String,
             }
 
             if (gameState.isMyTurn(player)){
-                val selectedColumn = moveStrategy(player, gameState)
+                val myColour = gameState.getPlayerColour(player)
+                val selectedColumn = moveStrategy(myColour, gameState)
                 connector.makeMove(player, selectedColumn)
             } else {
                 // Wait for opponent to make a move
