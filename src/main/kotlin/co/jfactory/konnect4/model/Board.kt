@@ -34,6 +34,8 @@ data class Board(private val cells: List<List<CellColour>>) {
      */
     fun applyMove(move: Triple<Int, Int, CellColour>) = applyMove(move.first, move.second, move.third)
 
+    fun applyMove(pos: Pair<Int,Int>, colour: CellColour) = applyMove(pos.first, pos.second, colour)
+
     fun applyMove(column: Int, row: Int, colour: CellColour) =
             Board(cells.mapIndexed { i, list -> if (i == column) list.addCounter(row, colour) else list })
 }

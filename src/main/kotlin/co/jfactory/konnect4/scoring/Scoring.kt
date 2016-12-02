@@ -6,7 +6,8 @@ import co.jfactory.konnect4.model.getAvailableMoves
 
 class BoardScorer(val board: Board) {
     companion object {
-        val SCORING_PATTERNS = listOf(Pair(Regex(".*XXXX.*"), 10000),
+        val WINNING_SCORE = 10000
+        val SCORING_PATTERNS = listOf(Pair(Regex(".*XXXX.*"), WINNING_SCORE),
                 Pair(Regex(".*_XXX_.*"), 1024),
                 Pair(Regex(".*_XXX.*|.*XXX_.*|.*XX_X.*|.*X_XX.*"), 256),
                 Pair(Regex(".*__XX_.*|.*_XX__.*"), 64),
